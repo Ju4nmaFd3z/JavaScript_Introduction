@@ -43,3 +43,15 @@ const producto = {
 
 //console.log(`Producto: ${producto.nombre}\nPrecio: ${producto.precio}$\nStock: ${producto.stock}`)
 console.log(producto.toString());
+
+//Funciones
+const total = function (precio, unidades) {
+    return precio*unidades;
+}
+
+console.log("Total 9.99 * 3 = ", total(9.99, 3));
+
+//Funciones flecha (Arrow Functions)
+//const name = (params) => {cuerpo};
+const flecha = (precio, unidades) => precio * unidades;
+console.log("Total 12.50 * 7 = ", flecha(12.50, 7));
