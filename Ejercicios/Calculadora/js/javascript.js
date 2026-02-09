@@ -9,12 +9,31 @@ let resultadoMostrado = false;   // Para saber si hay que empezar un nuevo núme
 
 // Obtengo los elementos de la web necesarios a partir del DOM
 const botonesNumeros = [...document.querySelectorAll(".numero")];     // Devuelve un Array a partir de un NodeList
+const pantalla = document.getElementById("pantalla");
+const botonesOperadores = [...document.querySelectorAll(".operacion")];
+const botonIgual = document.getElementById("igual");
 
-for (let i = 0; i < botonesNumeros.length; i++){
-    botonesNumeros[i].addEventListener("click", () => {
-        mostrarNumeroPantalla(botonesNumeros[i].textContent);
-    })
-}
+// OPCIÓN 1: Método FOR
+// for (let i = 0; i < botonesNumeros.length; i++){
+//     botonesNumeros[i].addEventListener("click", () => {
+//         mostrarNumeroPantalla(botonesNumeros[i].textContent);
+//     })
+// }
+
+// OPCIÓN 1: Método forEach() [Arrays]
+botonesNumeros.forEach(boton => {
+    boton.addEventListener("click", () => {
+        mostrarNumeroPantalla(boton.textContent);
+    });
+});
+
+botonesOperadores.forEach(boton => {
+    boton.addEventListener("click", () => {
+        manejarOperador(boton.textContent);
+    });
+});
+
+botonIgual.addEventListener("click", calcularOperacion)
 
 // ------------------------------------------
 // Funcionalidad de la calculadora
@@ -36,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
  * Además, actualiza su clase CSS para reflejar visualmente que está deshabilitado.
  *
  */
-function deshabilitarPunto(){ 
+function deshabilitarPunto(){
 
 }
 
@@ -47,7 +66,7 @@ function deshabilitarPunto(){
  * Además, actualiza su clase CSS para reflejar visualmente que está activo.
  *
  */
-function habilitarPunto(){ 
+function habilitarPunto(){
 
 }
 
@@ -64,7 +83,7 @@ function habilitarPunto(){
 *
 */
 function actualizarPantalla() {
-
+    pantalla.textContent = valorActual;
 }
 
 
@@ -80,8 +99,16 @@ function actualizarPantalla() {
  * @param {string} numero - El dígito que el usuario ha pulsado (0–9).
  *
  */
-function mostrarNumeroPantalla(numero) { 
-
+function mostrarNumeroPantalla(numero) {
+    if(resultadoMostrado) {
+        pantalla.textContent = valorActual;
+        resultadoMostrado = false;
+    } else if (valorActual === "0") {
+        valorActual = numero;
+    } else {
+        valorActual += numero;
+    }
+    actualizarPantalla();
 }
 
 /**
@@ -91,7 +118,7 @@ function mostrarNumeroPantalla(numero) {
  * Si corresponde, agrega un punto y actualiza la pantalla.
  * Deshabilita el botón de punto para evitar múltiples decimales.
  */
-function mostrarPuntoPantalla() { 
+function mostrarPuntoPantalla() {
 
 }
 
@@ -105,8 +132,11 @@ function mostrarPuntoPantalla() {
  * - Se resetea la pantalla volviendo a poner el número a 0.
  *
  */
-function manejarOperador(operador) { 
-
+function manejarOperador(operador) {
+    operadorActual = operador;
+    valorAnterior = valorActual;
+    valorActual = "0";
+    resultadoMostrado = false;
 }
 
 /**
@@ -116,8 +146,35 @@ function manejarOperador(operador) {
  * Gestiona también el caso especial de división entre cero, mostrando "Error".
  *
  */
-function calcularOperacion() { 
-
+function calcularOperacion() {
+    if (operadorActual === null || valorAnterior === null) return;
+    let num1 = parseFloat(valorAnterior);
+    let num2 = parseFloat(valorActual);
+    let resultado;
+    switch (operadorActual) {
+        case "+":
+            resultado = num1+num2;
+            break;
+        case "-":
+            resultado = num1-num2;
+            break;
+        case "x":
+            resultado = num1*num2;
+            break;
+        case "/":
+            if (num2 === 0){
+                valorActual = "Error";
+                // Ponerlo en rojo
+                return;
+            }
+            resultado = num1/num2;
+            break;
+    }
+    valorActual = resultado.toString();
+    // Aplicar el color del resultado de la operación
+    aplicarColorResultado(operadorActual);
+    actualizarPantalla();
+    resultadoMostrado = true;
 }
 
 /**
@@ -126,7 +183,7 @@ function calcularOperacion() {
  * Establece la clase CSS correspondiente al estado visual normal de la pantalla.
  *
  */
-function pantallaColorNormal() { 
+function pantallaColorNormal() {
 
 }
 /**
@@ -135,7 +192,7 @@ function pantallaColorNormal() {
  * Restablece la entrada actual a 0.
  *
  */
-function borrarEntrada() { 
+function borrarEntrada() {
 
 }
 /**
@@ -145,7 +202,7 @@ function borrarEntrada() {
  * También actualiza la pantalla, restaura el color normal y habilita el punto decimal.
  *
  */
-function borrarTodo() { 
+function borrarTodo() {
 
 }
 /**
@@ -155,7 +212,7 @@ function borrarTodo() {
  * Cuando solo queda un carácter, la pantalla vuelve a mostrar 0.
  *
  */
-function retroceder() { 
+function retroceder() {
 
 }
 
@@ -172,7 +229,7 @@ function retroceder() {
  * @param {string} operacion - La operación a realizar: 'inverso', 'cuadrado' o 'raiz'.
  *
  */
-function operacionInmediata(operacion) { 
+function operacionInmediata(operacion) {
 
 }
 
@@ -184,8 +241,23 @@ function operacionInmediata(operacion) {
  * @param {string} operador - Operación realizada: '+', '-', '×', '/', 'inverso', 'cuadrado', 'raiz'.
  *
  */
-function aplicarColorResultado(operador) { 
-
+function aplicarColorResultado(operador) {
+    let classnames = pantalla.getAttribute("class").split(" ");
+    switch (operador) {
+        case "+":
+            classnames[1] = "color-suma";
+            break;
+        case "-":
+            classnames[1] = "color-resta";
+            break;
+        case "x":
+            classnames[1] = "color-multiplicacion";
+            break;
+        case "/":
+            classnames[1] = "color-division";
+            break;
+    }
+    pantalla.className = classnames.join(" ");
 }
 
 /**
