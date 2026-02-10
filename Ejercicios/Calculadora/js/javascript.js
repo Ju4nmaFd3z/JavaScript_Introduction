@@ -8,10 +8,10 @@ let operadorActual = null;       // +, -, *, /
 let resultadoMostrado = false;   // Para saber si hay que empezar un nuevo número
 
 // Obtengo los elementos de la web necesarios a partir del DOM
-const botonesNumeros = [...document.querySelectorAll(".numero")];     // Devuelve un Array a partir de un NodeList
+const botonesNumeros = [...document.querySelectorAll(".boton-numero")];     // Devuelve un Array a partir de un NodeList
 const pantalla = document.getElementById("pantalla");
-const botonesOperadores = [...document.querySelectorAll(".operacion")];
-const botonIgual = document.getElementById("igual");
+const botonesOperadores = [...document.querySelectorAll(".boton-operacion")];
+const botonIgual = document.getElementById("id-igual");
 
 // OPCIÓN 1: Método FOR
 // for (let i = 0; i < botonesNumeros.length; i++){
