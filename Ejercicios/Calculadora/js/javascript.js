@@ -188,7 +188,7 @@ function calcularOperacion() {
  *
  */
 function pantallaColorNormal() {
-    pantalla.className = "pantalla texto-defecto"
+    pantalla.className = "pantalla-calc texto-defecto"
 }
 /**
  * @brief Borra el número introducido actualmente en la pantalla.
