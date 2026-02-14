@@ -12,6 +12,7 @@ const botonesNumeros = [...document.querySelectorAll(".boton-numero")];     // D
 const pantalla = document.getElementById("pantalla");
 const botonesOperadores = [...document.querySelectorAll(".boton-operacion")];
 const botonIgual = document.getElementById("id-igual");
+const botonBorrarEntrada = document.getElementById("borrar-entrada");
 
 // OPCIÓN 1: Método FOR
 // for (let i = 0; i < botonesNumeros.length; i++){
@@ -34,6 +35,8 @@ botonesOperadores.forEach(boton => {
 });
 
 botonIgual.addEventListener("click", calcularOperacion)
+
+botonBorrarEntrada.addEventListener("click", borrarEntrada)
 
 // ------------------------------------------
 // Funcionalidad de la calculadora
@@ -197,7 +200,9 @@ function pantallaColorNormal() {
  *
  */
 function borrarEntrada() {
-
+    valorActual = "0";
+    resultadoMostrado = false;
+    actualizarPantalla();
 }
 /**
  * @brief Restablece completamente la calculadora a su estado inicial.
@@ -207,7 +212,7 @@ function borrarEntrada() {
  *
  */
 function borrarTodo() {
-
+    
 }
 /**
  * @brief Elimina el último carácter del número mostrado en pantalla.
