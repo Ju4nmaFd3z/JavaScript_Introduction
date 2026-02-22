@@ -6,9 +6,9 @@
     font-display: swap;
 }
 
-/************************/
-/* Estilos Globales     */
-/************************/
+/* ========================
+    Globales
+   ======================== */
 
 .disenyo-principal {
     background: radial-gradient(circle at center, #1e2024 0%, #0f1012 100%);
@@ -29,9 +29,9 @@
     align-items: center;
 }
 
-/****************************/
-/* Cabecera                 */
-/****************************/
+/* ========================
+    Cabecera
+   ======================== */
 
 .cabecera-principal {
     padding: 2rem;
@@ -41,35 +41,31 @@
 .titulo-calc {
     font-family: 'Segment7Standard', monospace;
     color: #404040;
-    text-transform: uppercase;
     font-size: 1.8rem;
     letter-spacing: 6px;
     margin: 0;
     opacity: 0.6;
 }
 
-/********************************************/
-/* Contenedor Principal                     */
-/********************************************/
+/* ========================
+    Calculadora
+   ======================== */
 
 .contenedor-calculadora {
     background: #17181a;
     padding: 25px;
     border-radius: 30px;
     border: 1px solid #25262a;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
     width: 340px;
 }
 
-/********************************************/
-/* Pantalla (Display)                       */
-/********************************************/
+/* Pantalla */
 
 .pantalla-calc {
     background: #0a0b0c;
     font-family: 'Segment7Standard', monospace;
     font-size: 2.8rem;
-    color: #00ffaa;
     padding: 20px;
     border-radius: 15px;
     height: 90px;
@@ -80,12 +76,9 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    text-shadow: 0 0 10px rgba(0, 255, 170, 0.4);
 }
 
-/********************************************/
-/* Botonera                                 */
-/********************************************/
+/* Botonera */
 
 .cuadricula-calc {
     display: grid;
@@ -95,16 +88,16 @@
 
 .boton {
     background: #222428;
-    color: #ffffff;
+    color: #fff;
     font-size: 1.1rem;
     padding: 20px;
     border-radius: 12px;
     border: none;
     cursor: pointer;
-    transition: all 0.2s ease;
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
 }
 
 .boton:hover {
@@ -117,12 +110,10 @@
     transform: translateY(1px);
 }
 
-.boton-ancho {
-    grid-column: span 2;
-}
+.boton-ancho { grid-column: span 2; }
 
-/* Tipos de botones */
-.boton-control, .boton-funcion {
+.boton-control,
+.boton-funcion {
     background: #2a2d32;
     color: #adb5bd;
 }
@@ -140,48 +131,48 @@
 
 .boton-igual:hover {
     background: #05ffad;
-    box-shadow: 0 0 20px rgba(0, 255, 170, 0.4);
+    box-shadow: 0 0 20px rgba(0,255,170,0.4);
 }
 
-/* Estado deshabilitado */
 .esta-deshabilitado {
     opacity: 0.2;
     cursor: not-allowed;
     pointer-events: none;
 }
 
-/******************************************/
-/* Colores de texto en pantalla           */
-/******************************************/
+/* ========================
+    Colores de pantalla
+   ======================== */
 
-.texto-defecto { color: #00ffaa; }
-.texto-error   { color: #ff4940; }
-.color-suma    { color: #3ae23a; }
-.color-resta   { color: #ffbd44; }
-.color-multiplicacion { color: #70d1ff; }
-.color-division       { color: #c58dff; }
+.texto-defecto         { color: #00ffaa; text-shadow: 0 0 10px rgba(0,255,170,0.4); }
+.texto-error           { color: #ff4940; text-shadow: 0 0 10px rgba(255,73,64,0.4); }
+.color-suma            { color: #3ae23a; text-shadow: 0 0 10px rgba(58,226,58,0.4); }
+.color-resta           { color: #ffbd44; text-shadow: 0 0 10px rgba(255,189,68,0.4); }
+.color-multiplicacion  { color: #70d1ff; text-shadow: 0 0 10px rgba(112,209,255,0.4); }
+.color-division        { color: #c58dff; text-shadow: 0 0 10px rgba(197,141,255,0.4); }
 
-/************************************************/
-/* Iconos de función                            */
-/************************************************/
+/* ========================
+    Iconos de función
+   ======================== */
 
-#op-inverso, #op-cuadrado, #op-raiz {
+#op-inverso,
+#op-cuadrado,
+#op-raiz {
     background-size: 22px;
     background-repeat: no-repeat;
     background-position: center;
     filter: invert(1) brightness(0.8);
 }
 
-#op-inverso { background-image: url(./imagenes/icon_1_over_x_white_normal.svg); }
+#op-inverso  { background-image: url(./imagenes/icon_1_over_x_white_normal.svg); }
 #op-cuadrado { background-image: url(./imagenes/icon_x_squared_white_normal.svg); }
-#op-raiz { background-image: url(./imagenes/icon_square_root_white_normal.svg); }
+#op-raiz     { background-image: url(./imagenes/icon_square_root_white_normal.svg); }
 
-/*********************************/
-/* Pie de página                 */
-/*********************************/
+/* ========================
+    Pie de página
+   ======================== */
 
 .pie-principal {
-    background: transparent;
     color: #404040;
     padding: 2rem;
     font-size: 0.65rem;

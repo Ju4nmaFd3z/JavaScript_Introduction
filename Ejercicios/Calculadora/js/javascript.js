@@ -14,11 +14,11 @@ const botonesOperadores = [...document.querySelectorAll(".boton-operacion")];
 const botonIgual = document.getElementById("id-igual");
 const botonBorrarEntrada = document.getElementById("borrar-entrada");
 const botonBorrarTodo = document.getElementById("borrar-todo");
-const botonRetroceder = document.getElementById("retroceder");
-const botonPunto = document.getElementById("punto");
-const botonInverso = document.getElementById("inverso");
-const botonCuadrado = document.getElementById("cuadrado");
-const botonRaiz = document.getElementById("raiz");
+const botonRetroceso = document.getElementById("retroceso");
+const botonPunto = document.getElementById("id-punto");
+const botonInverso = document.getElementById("op-inverso");
+const botonCuadrado = document.getElementById("op-cuadrado");
+const botonRaiz = document.getElementById("op-raiz");
 
 // OPCIÓN 1: Método FOR
 // for (let i = 0; i < botonesNumeros.length; i++){
@@ -40,9 +40,14 @@ botonesOperadores.forEach(boton => {
     });
 });
 
-botonIgual.addEventListener("click", calcularOperacion)
-botonBorrarEntrada.addEventListener("click", borrarEntrada)
-botonBorrarTodo.addEventListener("click", borrarTodo)
+botonIgual.addEventListener("click", calcularOperacion);
+botonPunto.addEventListener("click", mostrarPuntoPantalla);
+botonBorrarEntrada.addEventListener("click", borrarEntrada);
+botonBorrarTodo.addEventListener("click", borrarTodo);
+botonRetroceso.addEventListener("click", retroceder);
+botonInverso.addEventListener("click", () => operacionInmediata("inverso"));
+botonCuadrado.addEventListener("click", () => operacionInmediata("cuadrado"));
+botonRaiz.addEventListener("click", () => operacionInmediata("raiz"));
 
 // ------------------------------------------
 // Funcionalidad de la calculadora
@@ -64,8 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
  * Además, actualiza su clase CSS para reflejar visualmente que está deshabilitado.
  *
  */
-function deshabilitarPunto(){
-
+function deshabilitarPunto() {
+    botonPunto.classList.add("esta-deshabilitado");
 }
 
 /**
@@ -75,8 +80,8 @@ function deshabilitarPunto(){
  * Además, actualiza su clase CSS para reflejar visualmente que está activo.
  *
  */
-function habilitarPunto(){
-
+function habilitarPunto() {
+    botonPunto.classList.remove("esta-deshabilitado");
 }
 
 
@@ -92,7 +97,18 @@ function habilitarPunto(){
 *
 */
 function actualizarPantalla() {
-    pantalla.textContent = valorActual;
+    let texto = valorActual;
+    if (texto !== "Error" && texto.length > 12) {
+        let num = parseFloat(texto);
+        if (!isFinite(num)) {
+            texto = "Error";
+        } else {
+            let redondeado = parseFloat(num.toPrecision(12));
+            texto = redondeado.toString();
+        }
+        valorActual = texto;
+    }
+    pantalla.textContent = texto;
 }
 
 
@@ -109,9 +125,11 @@ function actualizarPantalla() {
  *
  */
 function mostrarNumeroPantalla(numero) {
-    if(resultadoMostrado) {
-        pantalla.textContent = valorActual;
+    if (resultadoMostrado) {
+        valorActual = numero;
         resultadoMostrado = false;
+        pantallaColorNormal();
+        habilitarPunto();
     } else if (valorActual === "0") {
         valorActual = numero;
     } else {
@@ -128,7 +146,15 @@ function mostrarNumeroPantalla(numero) {
  * Deshabilita el botón de punto para evitar múltiples decimales.
  */
 function mostrarPuntoPantalla() {
-
+    if (resultadoMostrado) {
+        valorActual = "0.";
+        resultadoMostrado = false;
+        pantallaColorNormal();
+    } else if (!valorActual.includes(".")) {
+        valorActual += ".";
+    }
+    deshabilitarPunto();
+    actualizarPantalla();
 }
 
 /**
@@ -142,10 +168,16 @@ function mostrarPuntoPantalla() {
  *
  */
 function manejarOperador(operador) {
+    // Si ya hay una operación pendiente, calcular antes de continuar
+    if (operadorActual !== null && !resultadoMostrado) {
+        calcularOperacion();
+    }
     operadorActual = operador;
     valorAnterior = valorActual;
     valorActual = "0";
     resultadoMostrado = false;
+    habilitarPunto();
+    pantallaColorNormal();
 }
 
 /**
@@ -171,23 +203,20 @@ function calcularOperacion() {
             resultado = num1*num2;
             break;
         case "/":
-            if (num2 === 0){
-                valorActual = "Error";
-                // let classnames = pantalla.getAttribute("class").split(" ");
-                // classnames[1] = "texto-error";
-                // pantalla.className = classnames.join(" ");
-                pantalla.classList.replace("texto-defecto", "texto-error")
-                actualizarPantalla();
+            if (num2 === 0) {
+                mostrarError();
                 return;
             }
-            resultado = num1/num2;
+            resultado = num1 / num2;
             break;
+        default: return;
     }
-    valorActual = resultado.toString();
-    // Aplicar el color del resultado de la operación
     aplicarColorResultado(operadorActual);
+    valorActual = resultado.toString();
     actualizarPantalla();
     resultadoMostrado = true;
+    habilitarPunto();
+    if (valorActual.includes(".")) deshabilitarPunto();
 }
 
 /**
@@ -197,8 +226,9 @@ function calcularOperacion() {
  *
  */
 function pantallaColorNormal() {
-    pantalla.className = "pantalla-calc texto-defecto"
+    pantalla.className = "pantalla-calc texto-defecto";
 }
+
 /**
  * @brief Borra el número introducido actualmente en la pantalla.
  *
@@ -208,9 +238,11 @@ function pantallaColorNormal() {
 function borrarEntrada() {
     valorActual = "0";
     resultadoMostrado = false;
-    actualizarPantalla();
+    habilitarPunto();
     pantallaColorNormal();
+    actualizarPantalla();
 }
+
 /**
  * @brief Restablece completamente la calculadora a su estado inicial.
  *
@@ -220,12 +252,14 @@ function borrarEntrada() {
  */
 function borrarTodo() {
     valorActual = "0";
-    valorAnterior = "0";
+    valorAnterior = null;
     operadorActual = null;
     resultadoMostrado = false;
+    habilitarPunto();
     pantallaColorNormal();
     actualizarPantalla();
 }
+
 /**
  * @brief Elimina el último carácter del número mostrado en pantalla.
  *
@@ -234,7 +268,18 @@ function borrarTodo() {
  *
  */
 function retroceder() {
-
+    if (resultadoMostrado) {
+        borrarEntrada();
+        return;
+    }
+    if (valorActual.length <= 1) {
+        valorActual = "0";
+    } else {
+        valorActual = valorActual.slice(0, -1);
+    }
+    // Reactivar punto si ya no queda punto en el número
+    if (!valorActual.includes(".")) habilitarPunto();
+    actualizarPantalla();
 }
 
 /**
@@ -251,7 +296,30 @@ function retroceder() {
  *
  */
 function operacionInmediata(operacion) {
+    let num = parseFloat(valorActual);
+    let resultado;
 
+    switch (operacion) {
+        case "inverso":
+            if (num === 0) { mostrarError(); return; }
+            resultado = 1 / num;
+            break;
+        case "cuadrado":
+            resultado = num * num;
+            break;
+        case "raiz":
+            if (num < 0) { mostrarError(); return; }
+            resultado = Math.sqrt(num);
+            break;
+        default: return;
+    }
+
+    aplicarColorResultado(operacion);
+    valorActual = resultado.toString();
+    actualizarPantalla();
+    resultadoMostrado = true;
+    habilitarPunto();
+    if (valorActual.includes(".")) deshabilitarPunto();
 }
 
 /**
@@ -280,20 +348,30 @@ function aplicarColorResultado(operador) {
     // }
     // pantalla.className = classnames.join(" "); //["pantalla, texto-defecto"]
     pantallaColorNormal();
-    switch (operador) {
-        case "+":
-            pantalla.classList.replace("texto-defecto", "color-suma")
-            break;
-        case "-":
-            pantalla.classList.replace("texto-defecto", "color-resta")
-            break;
-        case "x":
-            pantalla.classList.replace("texto-defecto", "color-multiplicacion")
-            break;
-        case "/":
-            pantalla.classList.replace("texto-defecto", "color-division")
-            break;
-    }
+    const mapa = {
+        "+": "color-suma",
+        "-": "color-resta",
+        "x": "color-multiplicacion",
+        "/": "color-division",
+        "inverso": "color-division",
+        "cuadrado": "color-multiplicacion",
+        "raiz": "color-suma"
+    };
+    const clase = mapa[operador];
+    if (clase) pantalla.classList.replace("texto-defecto", clase);
+}
+
+/**
+ * @brief Muestra "Error" en pantalla con color rojo.
+ *
+ * Función auxiliar reutilizable para mostrar el estado de error en la calculadora.
+ *
+ */
+function mostrarError() {
+    valorActual = "Error";
+    pantalla.classList.replace("texto-defecto", "texto-error");
+    actualizarPantalla();
+    resultadoMostrado = true;
 }
 
 /**
@@ -313,6 +391,29 @@ function aplicarColorResultado(operador) {
  * @param {KeyboardEvent} teclaevento - Evento de teclado capturado.
  *
  */
-
 window.addEventListener('keydown', (teclaevento) => {
+    if (teclaevento.key >= "0" && teclaevento.key <= "9") {
+        mostrarNumeroPantalla(teclaevento.key);
+    } else if (teclaevento.key === ".") {
+        mostrarPuntoPantalla();
+    } else if (teclaevento.key === "+" || teclaevento.key === "-") {
+        manejarOperador(teclaevento.key);
+    } else if (teclaevento.key === "*") {
+        manejarOperador("x");
+    } else if (teclaevento.key === "/") {
+        teclaevento.preventDefault(); // Evita la búsqueda rápida en navs cómo Firefox
+        manejarOperador("/");
+    } else if (teclaevento.key === "Enter" || teclaevento.key === "=") {
+        calcularOperacion();
+    } else if (teclaevento.key === "Backspace") {
+        retroceder();
+    } else if (teclaevento.key === "c" || teclaevento.key === "C") {
+        borrarTodo();
+    } else if (teclaevento.key === "i" || teclaevento.key === "I") {
+        operacionInmediata("inverso");
+    } else if (teclaevento.key === "s" || teclaevento.key === "S") {
+        operacionInmediata("cuadrado");
+    } else if (teclaevento.key === "r" || teclaevento.key === "R") {
+        operacionInmediata("raiz");
+    }
 });
