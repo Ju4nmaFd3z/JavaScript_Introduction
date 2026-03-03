@@ -1,0 +1,36 @@
+============================================
+PARTES OPTATIVAS REALIZADAS - Proyecto RA 03
+============================================
+
+--------------------------------------------
+PARTE OPTATIVA 1: Botón "Reiniciar juego"
+--------------------------------------------
+He añadido un panel junto a las estadísticas con un botón que reinicia el juego a su estado inicial:
+- Pone los contadores de victorias, derrotas y empates a 0.
+- Limpia los displays de jugada (vuelven a mostrar "?").
+- Muestra un mensaje temporal "¡Juego reiniciado!" durante 1,5 segundos.
+
+Función JavaScript: resetearJuego()
+
+--------------------------------------------
+PARTE OPTATIVA 2: Botón "Mostrar reglas"
+--------------------------------------------
+También he añadido un segundo botón en el mismo panel que muestra por consola (F12 → Console) las reglas completas del juego.
+Indica qué jugada vence a cuáles otras.
+
+Función JavaScript: mostrarReglas()
+
+--------------------------------------------
+PARTE OPTATIVA 3: Control por teclado
+--------------------------------------------
+Se puede jugar sin usar el ratón mediante las teclas que dices de usar en el documento:
+
+  Tecla 1 → Jugada: Piedra
+  Tecla 2 → Jugada: Papel
+  Tecla 3 → Jugada: Tijera
+  Tecla 4 → Jugada: Lagarto
+  Tecla 5 → Jugada: Spock
+  Tecla R → Reiniciar el juego
+  Tecla S → Mostrar las reglas por consola
+
+Implementado mediante: document.addEventListener("keydown", ...)

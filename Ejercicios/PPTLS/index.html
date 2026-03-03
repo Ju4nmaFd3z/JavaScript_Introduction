@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="Juan Manuel Fernández Rodríguez"/>
+    <title>Piedra, Papel, Tijera, Lagarto, Spock</title>
+    <link rel="icon" type="image/svg+xml" href="imagenes/spock-hand-gesture.svg"/>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="estilos.css" />
+</head>
+<body>
+    <!-- Cabecera -->
+    <header>
+        <h1 class="titulo-juego">Piedra · Papel · Tijera · Lagarto · Spock</h1>
+        <p class="subtitulo-juego">El juego definitivo</p>
+    </header>
+    <!-- Contenido principal -->
+    <main>
+        <!-- Panel de selección y panel de batalla -->
+        <div class="paneles-arriba">
+            <!-- Panel: Elige tu jugada -->
+            <section class="panel-seleccion-jugada">
+                <h2>Elige tu jugada</h2>
+                <div class="contenedor-elecciones-juego">
+                    <button class="boton-eleccion-jugada" data-jugada="piedra" title="">
+                        <span class="icono-jugada">🪨</span>
+                        <span>Piedra</span>
+                    </button>
+                    <button class="boton-eleccion-jugada" data-jugada="papel" title="">
+                        <span class="icono-jugada">📄</span>
+                        <span>Papel</span>
+                    </button>
+                    <button class="boton-eleccion-jugada" data-jugada="tijera" title="">
+                        <span class="icono-jugada">✂️</span>
+                        <span>Tijera</span>
+                    </button>
+                    <button class="boton-eleccion-jugada" data-jugada="lagarto" title="">
+                        <span class="icono-jugada">🦎</span>
+                        <span>Lagarto</span>
+                    </button>
+                    <button class="boton-eleccion-jugada" data-jugada="spock" title="">
+                        <span class="icono-jugada">🖖</span>
+                        <span>Spock</span>
+                    </button>
+                </div>
+            </section>
+            <!-- Panel: Batalla -->
+            <section class="panel-batalla">
+                <h2>Batalla</h2>
+                <div class="contenedor-jugadores">
+                    <div class="jugador">
+                        <p class="etiqueta-jugador">TÚ</p>
+                        <div class="mostrar-jugada" id="display-jugador">
+                            <span class="placeholder">?</span>
+                        </div>
+                    </div>
+                    <div class="vs-circle">VS</div>
+                    <div class="jugador">
+                        <p class="etiqueta-jugador">CPU</p>
+                        <div class="mostrar-jugada" id="display-cpu">
+                            <span class="placeholder">?</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="paneles-abajo">
+            <!-- Estadísticas del juego -->
+            <div class="contenedor-resultado">
+                <div class="resultados">
+                    <p class="mensaje-resultado" id="mensaje-resultado">¡Batalla!</p>
+                    <div class="estadisticas-juego">
+                        <div class="panel-estadistica">
+                            <span class="valor-estadistica" id="contador-victorias">0</span>
+                            <span class="etiqueta-estadistica">Victorias</span>
+                        </div>
+                        <div class="panel-estadistica">
+                            <span class="valor-estadistica" id="contador-derrotas">0</span>
+                            <span class="etiqueta-estadistica">Derrotas</span>
+                        </div>
+                        <div class="panel-estadistica">
+                            <span class="valor-estadistica" id="contador-empates">0</span>
+                            <span class="etiqueta-estadistica">Empates</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Botones opcionales (reiniciar y reglas) -->
+            <div class="contenedor-botones-opcional">
+                <button class="boton-secundario" id="boton-reiniciar">Reiniciar juego</button>
+                <button class="boton-secundario" id="boton-reglas">Mostrar reglas</button>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>Proyecto evaluación RA 03 - Lenguajes de marcas y sistemas de gestión de información</p>
+        <p>Proyecto realizado por: 👋 Juan Manuel Fernández Rodríguez 👋 (Declaro que no he usado IA en el proyecto)</p>
+    </footer>
+    <script src="js/javascript.js"></script>
+</body>
+
+</html>

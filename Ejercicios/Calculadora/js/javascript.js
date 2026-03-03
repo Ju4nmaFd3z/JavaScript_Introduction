@@ -194,13 +194,13 @@ function calcularOperacion() {
     let resultado;
     switch (operadorActual) {
         case "+":
-            resultado = num1+num2;
+            resultado = num1 + num2;
             break;
         case "-":
-            resultado = num1-num2;
+            resultado = num1 - num2;
             break;
         case "x":
-            resultado = num1*num2;
+            resultado = num1 * num2;
             break;
         case "/":
             if (num2 === 0) {
