@@ -142,7 +142,23 @@ function obtenerEleccionCPU() {
  * @return {void} No devuelve ningún valor.
  */
 function mostrarEleccion(display, eleccion, jugador) {
+    try {
+        display.innerHTML = "";
+        display.classList.add("active");
 
+        const spanIcono = document.createElement("span");
+        spanIcono.classList.add("icono-jugada-grande");
+        spanIcono.textContent = iconos[eleccion];
+
+        const spanTexto = document.createElement("span");
+        spanTexto.classList.add("texto-jugada");
+        spanTexto.textContent = eleccion.charAt(0).toUpperCase() + eleccion.slice(1);
+
+        display.appendChild(spanIcono);
+        display.appendChild(spanTexto);
+    } catch (error) {
+        console.error("Error al mostrar la elección de " + jugador + ":", error);
+    }
 }
 
 /**
@@ -155,7 +171,12 @@ function mostrarEleccion(display, eleccion, jugador) {
  * @return {void} No devuelve ningún valor.
  */
 function reiniciarDisplays() {
-
+    displayJugador.innerHTML = '<span class="placeholder">?</span>';
+    displayCPU.innerHTML = '<span class="placeholder">?</span>';
+    displayJugador.classList.remove("active");
+    displayCPU.classList.remove("active");
+    mensajeResultado.textContent = "¡Batalla!";
+    mensajeResultado.className = "mensaje-resultado";
 }
 
 /**
@@ -237,7 +258,14 @@ function actualizarContadores() {
  * @return {void} No devuelve ningún valor.
  */
 function inicializarTooltips() {
-
+    botonesJugada.forEach(boton => {
+        const jugada = boton.dataset.jugada;
+        const vence = victoriasSobre[jugada];
+        // Ponemos la primera letra en mayúscula para cada opción que vence
+        const vence0 = vence[0].charAt(0).toUpperCase() + vence[0].slice(1);
+        const vence1 = vence[1].charAt(0).toUpperCase() + vence[1].slice(1);
+        boton.title = `${jugada.charAt(0).toUpperCase() + jugada.slice(1)} vence a: ${vence0} y ${vence1}`;
+    });
 }
 
 // ------------------------------------------
@@ -253,7 +281,13 @@ function inicializarTooltips() {
  * @return {void} No devuelve ningún valor.
  */
 function mostrarReglas() {
-    // Preguntar si se puede hacer a lo cateto con console.log
+    console.log("======= REGLAS DEL JUEGO =======");
+    console.log("Piedra vence a: Tijera y Lagarto");
+    console.log("Papel vence a: Piedra y Spock");
+    console.log("Tijera vence a: Papel y Lagarto");
+    console.log("Lagarto vence a: Spock y Papel");
+    console.log("Spock vence a: Tijera y Piedra");
+    console.log("================================");
 }
 
 /**
@@ -275,7 +309,9 @@ function resetearJuego() {
     reiniciarDisplays();
     actualizarContadores();
 
-    // Falta mostrar el mensaje
+    // Mensaje temporal de reinicio
+    mensajeResultado.textContent = "¡Juego reiniciado!";
+    mensajeResultado.className = "mensaje-resultado empate";
 
     // Uso el mismo Timeout de antes
     setTimeout(() => {
@@ -295,5 +331,19 @@ function resetearJuego() {
  * @param {KeyboardEvent} event - El evento de pulsación de tecla.
  */
 document.addEventListener("keydown", (event) => {
-
+    if (event.key === "1") {
+        jugar("piedra");
+    } else if (event.key === "2") {
+        jugar("papel");
+    } else if (event.key === "3") {
+        jugar("tijera");
+    } else if (event.key === "4") {
+        jugar("lagarto");
+    } else if (event.key === "5") {
+        jugar("spock");
+    } else if (event.key === "r" || event.key === "R") {
+        resetearJuego();
+    } else if (event.key === "s" || event.key === "S") {
+        mostrarReglas();
+    }
 });
